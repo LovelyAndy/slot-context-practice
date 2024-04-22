@@ -1,3 +1,7 @@
+<script setup>
+import Home from '../src/components/Home.vue'
+</script>
+
 <template>
-<div class="p-4"><router-view/></div>
+    <Home />
 </template>

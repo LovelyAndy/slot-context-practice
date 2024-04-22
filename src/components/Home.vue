@@ -1,30 +1,31 @@
-<template>
-<div class="font-extrabold mb-6 text-3xl">Home</div>
-<p class="mb-6">Name in store is: {{name}}</p>
-<input type="text" v-model="newName" class="p-2 mr-4 border-2 border-gray-500 rounded"/>
-<button @click="saveName" class="p-2 text-white bg-indigo-600 rounded">Submit</button>
-</template>
+<script lang="ts" setup>
+import MyTable, { Col } from './MyTable.vue'
 
-<script lang="ts">
-import { defineComponent, computed, ref} from 'vue';
-import { useStore } from 'vuex';
-import {useRouter} from'vue-router'
+const mocks = [
+    {
+        name: 'funny man',
+        age: 420,
+        saying: `hey it's me, funny man!`,
+    },
+    {
+        name: 'poopoo peepee man',
+        age: 69,
+        saying: `hey it's me, poopoo peepee man!`,
+    },
+    {
+        name: 'Rachel',
+        age: 50,
+        saying: `hey it's me, rachel!`,
+    },
+]
 
-export default defineComponent({
-  name: '',
-  setup() {
-    const store = useStore()
-    const name = computed(()=>{
-      return store.state.user.name
-    })
-    const newName= ref('')
-    function saveName(){
-      store.dispatch('saveName', newName.value)
-      newName.value = ''
-      router.push('/about')
-    }
-    const router = useRouter()
-    return { store, name, newName, saveName };
-  },
-});
+const columns: Col[] = [
+    { propName: 'name', colLabel: 'Name' },
+    { propName: 'age', colLabel: 'How Old' },
+    { propName: 'saying', colLabel: 'What did you say?' },
+]
 </script>
+
+<template>
+    <MyTable :data="mocks" :col="columns" />
+</template>
