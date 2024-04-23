@@ -18,40 +18,33 @@ const props = defineProps<{
 
 <template>
     <table class="min-w-full divide-y divide-gray-300">
-        <thead class="bg-gray-50">
+        <thead class="bg-gray-300">
             <tr>
                 <th
                     v-for="c in col"
                     :key="c.propName"
-                    class="
-                        px-6
-                        py-3
-                        text-left text-xs
-                        font-medium
-                        text-gray-500
-                        uppercase
-                        tracking-wider
-                    "
+                    class="p-6 text-left font-medium text-red-700 uppercase"
                 >
                     {{ c.colLabel }}
                 </th>
+                <th class="p-6 text-left uppercase text-red-700">All Data</th>
             </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-for="d in data" :key="d.name">
+        <tbody class="bg-white">
+            <tr v-for="(d, index) in data" :key="index">
                 <td
                     v-for="c in col"
                     :key="c.propName"
-                    class="
-                        px-6
-                        py-4
-                        whitespace-nowrap
-                        text-sm
-                        font-medium
-                        text-gray-900
-                    "
+                    class="p-6 whitespace-nowrap text-blue-900"
                 >
                     {{ d[c.propName] }}
+                </td>
+                <td class="p-6 text-green-900">
+                    <slot
+                        :name="`rowName-${index}`"
+                        :data="data"
+                        :rowIndex="index"
+                    />
                 </td>
             </tr>
         </tbody>

@@ -27,5 +27,30 @@ const columns: Col[] = [
 </script>
 
 <template>
-    <MyTable :data="mocks" :col="columns" />
+    <!-- <MyTable :data="mocks" :col="columns">
+        <template
+            v-for="(mock, index) in mocks"
+            :key="index"
+            #[`rowName-${index}`]="slotProps"
+        >
+            <div>
+                <span class="font-bold"
+                    >Data from index {{ slotProps.rowIndex }}</span
+                >
+                <pre class="text-sm">{{ slotProps.data[index] }}</pre>
+            </div>
+        </template>
+    </MyTable> -->
+    <MyTable :data="mocks" :col="columns">
+        <template
+            v-for="(mock, index) in mocks"
+            :key="index"
+            #[`rowName-${index}`]="{ data, rowIndex }"
+        >
+            <div>
+                <span class="font-bold">Data from index {{ rowIndex }}</span>
+                <pre class="text-sm">{{ data[index] }}</pre>
+            </div>
+        </template>
+    </MyTable>
 </template>
