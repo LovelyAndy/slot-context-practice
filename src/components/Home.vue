@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import MyTable, { Col } from './MyTable.vue'
+import MyTable, { Cols } from './MyTable.vue'
 
 const mocks = [
     {
@@ -19,38 +19,30 @@ const mocks = [
     },
 ]
 
-const columns: Col[] = [
+const columns: Cols[] = [
+    { slotName: 'editbutton', colLabel: '-' }, // an empty cell in which' slot we can put a button
     { propName: 'name', colLabel: 'Name' },
     { propName: 'age', colLabel: 'How Old' },
     { propName: 'saying', colLabel: 'What did you say?' },
+    { slotName: 'alldata', colLabel: 'raw data' }, // an empty cell in which' slot we can put `<pre>{{ data }}</pre>`
 ]
+
+function startEdit(rowIndex: number) {
+    const row = mocks[rowIndex]
+    alert(`show edit modal for row ${rowIndex} ${row.name}`)
+}
 </script>
 
 <template>
-    <!-- <MyTable :data="mocks" :col="columns">
-        <template
-            v-for="(mock, index) in mocks"
-            :key="index"
-            #[`rowName-${index}`]="slotProps"
-        >
-            <div>
-                <span class="font-bold"
-                    >Data from index {{ slotProps.rowIndex }}</span
-                >
-                <pre class="text-sm">{{ slotProps.data[index] }}</pre>
-            </div>
-        </template>
-    </MyTable> -->
     <MyTable :data="mocks" :col="columns">
-        <template
-            v-for="(mock, index) in mocks"
-            :key="index"
-            #[`rowName-${index}`]="{ data, rowIndex }"
-        >
-            <div>
-                <span class="font-bold">Data from index {{ rowIndex }}</span>
-                <pre class="text-sm">{{ data[index] }}</pre>
-            </div>
+        <!-- Edit Button Slot -->
+        <template #editbutton="{ ctx }">
+            <button @click="() => startEdit(ctx.rowIndex)">EDIT</button>
+        </template>
+
+        <!-- All Data Slot -->
+        <template #alldata="{ ctx }">
+            <pre>{{ ctx.rowData }}</pre>
         </template>
     </MyTable>
 </template>

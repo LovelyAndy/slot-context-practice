@@ -6,13 +6,18 @@ export type MyData = {
     age: number
     saying: string
 }
-export type Col = {
-    propName: keyof MyData
-    colLabel: string
-}
+export type Cols =
+    | {
+          propName: keyof MyData
+          colLabel: string
+      }
+    | {
+          slotName: string
+          colLabel: string
+      }
 const props = defineProps<{
     data: MyData[]
-    col: Col[]
+    col: Cols[]
 }>()
 </script>
 
@@ -22,29 +27,30 @@ const props = defineProps<{
             <tr>
                 <th
                     v-for="c in col"
-                    :key="c.propName"
+                    :key="'propName' in c ? c.propName : c.slotName"
                     class="p-6 text-left font-medium text-red-700 uppercase"
                 >
                     {{ c.colLabel }}
                 </th>
-                <th class="p-6 text-left uppercase text-red-700">All Data</th>
             </tr>
         </thead>
         <tbody class="bg-white">
             <tr v-for="(d, index) in data" :key="index">
                 <td
                     v-for="c in col"
-                    :key="c.propName"
+                    :key="'propName' in c ? c.propName : c.slotName"
                     class="p-6 whitespace-nowrap text-blue-900"
                 >
-                    {{ d[c.propName] }}
-                </td>
-                <td class="p-6 text-green-900">
-                    <slot
-                        :name="`rowName-${index}`"
-                        :data="data"
-                        :rowIndex="index"
-                    />
+                    <template v-if="'propName' in c">
+                        {{ d[c.propName] }}
+                    </template>
+                    <template v-else>
+                        <slot
+                            :name="c.slotName"
+                            :ctx="{ rowData: d, rowIndex: index }"
+                        />
+                        <!-- <slot :name="c.slotName" :rowData="d" :rowIndex="index"/> -->
+                    </template>
                 </td>
             </tr>
         </tbody>
