@@ -45,11 +45,17 @@ const props = defineProps<{
                         {{ d[c.propName] }}
                     </template>
                     <template v-else>
+                        <!-- Version 1: -->
                         <slot
                             :name="c.slotName"
-                            :ctx="{ rowData: d, rowIndex: index }"
+                            v-bind="{ rowData: d, rowIndex: index }"
                         />
-                        <!-- <slot :name="c.slotName" :rowData="d" :rowIndex="index"/> -->
+                        <!-- Version 2: -->
+                        <!-- <slot
+                            :name="c.slotName"
+                            :rowData="d"
+                            :rowIndex="index"
+                        /> -->
                     </template>
                 </td>
             </tr>
