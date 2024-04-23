@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import MyTable, { Cols } from './MyTable.vue'
+import MyTableWithTitle from './MyTableWithTitle.vue'
+import { Cols } from './MyTable.vue'
 
 const mocks = [
     {
@@ -34,7 +35,7 @@ function startEdit(rowIndex: number) {
 </script>
 
 <template>
-    <MyTable :data="mocks" :col="columns">
+    <MyTableWithTitle title="NICE TABLE" :data="mocks" :col="columns">
         <!-- Edit Button Slot -->
         <!-- Version A: -->
         <template #editbutton="ctx">
@@ -46,5 +47,5 @@ function startEdit(rowIndex: number) {
         <template #alldata="{ rowData }">
             <pre>{{ rowData }}</pre>
         </template>
-    </MyTable>
+    </MyTableWithTitle>
 </template>
